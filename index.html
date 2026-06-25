@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Japan-Readiness Index — how ready are foreign dev-tools for Japan?</title>
+<meta name="description" content="A live audit of 40 popular foreign developer tools, scored on Japan-market readiness: 特商法 page, /ja localization, hreflang ja, JPY pricing. 0 of 40 have a 特商法 page. None price in JPY.">
+<meta property="og:title" content="Japan-Readiness Index — 40 foreign dev-tools, scored for Japan">
+<meta property="og:description" content="0 of 40 have a 特商法 page. None price in JPY. Only 3 have a real Japanese site. A live, evidence-based audit.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+  :root{
+    --paper:#f4f1ea; --paper2:#eae5da; --ink:#1a1714; --ink2:#46403a;
+    --line:#cfc7b8; --line2:#bdb3a0; --ink-faint:#7a7263;
+    --vrm:#c4341f; --vrm-d:#9c2817;
+    --pass:#1a1714; --fail:#b9b0a0;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Courier New",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-size:15px; line-height:1.6;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:100% 0,0 100%;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 22px}
+  a{color:var(--vrm-d); text-decoration:none; border-bottom:1px solid var(--line2)}
+  a:hover{border-bottom-color:var(--vrm)}
+
+  /* header */
+  header{border-bottom:3px double var(--ink); padding:46px 0 26px; margin-bottom:0}
+  .kick{font-size:12px; letter-spacing:.32em; text-transform:uppercase; color:var(--vrm-d); margin:0 0 14px}
+  h1{font-size:clamp(30px,5.4vw,52px); line-height:1.04; margin:0 0 14px; font-weight:700; letter-spacing:-.01em}
+  .sub{font-size:16px; color:var(--ink2); margin:0 0 8px; max-width:60ch}
+  .meta-line{font-size:12.5px; color:var(--ink-faint); margin-top:14px}
+  .meta-line b{color:var(--ink)}
+
+  /* headline stats */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--ink); border-bottom:none; margin:30px 0 0}
+  .stat{border-right:1px solid var(--line2); border-bottom:1px solid var(--ink); padding:16px 16px 14px}
+  .stat:nth-child(4n){border-right:none}
+  .stat .n{font-size:32px; font-weight:700; line-height:1; letter-spacing:-.02em}
+  .stat .n.vrm{color:var(--vrm)}
+  .stat .l{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-faint); margin-top:8px}
+  @media(max-width:680px){.stats{grid-template-columns:repeat(2,1fr)} .stat:nth-child(4n){border-right:1px solid var(--line2)} .stat:nth-child(2n){border-right:none}}
+
+  .lede{border:1px solid var(--ink); border-top:none; padding:18px 18px; background:var(--paper2); font-size:15.5px; color:var(--ink); margin-bottom:34px}
+  .lede strong{color:var(--vrm-d)}
+
+  section{margin:38px 0}
+  h2{font-size:13px; letter-spacing:.22em; text-transform:uppercase; color:var(--ink); border-bottom:1px solid var(--ink); padding-bottom:8px; margin:0 0 18px}
+  h2 .c{color:var(--vrm-d)}
+
+  /* legend / filters */
+  .controls{display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin:0 0 14px; font-size:12px; color:var(--ink-faint)}
+  .filt{cursor:pointer; border:1px solid var(--line2); padding:5px 11px; background:transparent; font:inherit; font-size:12px; color:var(--ink2); letter-spacing:.04em}
+  .filt.on{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+  .legend{margin-left:auto; display:flex; gap:14px; align-items:center}
+  .legend span{display:inline-flex; align-items:center; gap:5px}
+
+  /* table */
+  .tbl-scroll{overflow-x:auto; border:1px solid var(--ink)}
+  table.lb{border-collapse:collapse; width:100%; min-width:720px; font-size:13.5px}
+  table.lb thead th{
+    background:var(--ink); color:var(--paper); text-align:left; padding:9px 8px;
+    font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; font-weight:700; position:sticky; top:0;
+  }
+  table.lb thead th.c{text-align:center}
+  tbody.grp{border-bottom:1px solid var(--line)}
+  tr.row{cursor:pointer; background:var(--paper)}
+  tr.row:hover{background:var(--paper2)}
+  tbody.grp.open tr.row{background:var(--paper2)}
+  td{padding:9px 8px; vertical-align:middle}
+  td.rank{color:var(--ink-faint); font-size:12px; width:34px}
+  td.name{min-width:150px}
+  td.name .nm{display:block; font-weight:700; color:var(--ink)}
+  td.name .site{display:block; font-size:11px; color:var(--ink-faint)}
+  td.cat{color:var(--ink2); font-size:12px; min-width:110px}
+  td.sig{text-align:center; width:46px}
+  .m{font-size:15px; line-height:1}
+  .m.pass{color:var(--ink)}
+  .m.part{color:var(--vrm)}
+  .m.fail{color:var(--fail)}
+  .m.unv{color:var(--ink-faint); font-weight:700}
+  td.score{text-align:right; width:54px}
+  .sc{font-weight:700; font-size:17px}
+  .sc-ready{color:var(--ink)} .sc-partial{color:var(--vrm-d)} .sc-closed{color:var(--ink-faint)}
+  td.tier{width:92px}
+  .badge{font-size:9.5px; letter-spacing:.08em; padding:3px 7px; border:1px solid; white-space:nowrap}
+  .b-ready{border-color:var(--ink); background:var(--ink); color:var(--paper)}
+  .b-partial{border-color:var(--vrm); color:var(--vrm-d)}
+  .b-closed{border-color:var(--line2); color:var(--ink-faint)}
+  td.exp{width:20px; color:var(--ink-faint); text-align:center}
+  tbody.grp.open td.exp{color:var(--vrm)}
+
+  tr.detail{display:none}
+  tbody.grp.open tr.detail{display:table-row}
+  .detail-in{padding:6px 8px 20px; display:grid; grid-template-columns:1.25fr 1fr; gap:26px}
+  @media(max-width:760px){.detail-in{grid-template-columns:1fr; gap:16px}}
+  .ev-row{font-size:12px; color:var(--ink2); padding:5px 0; border-bottom:1px dotted var(--line); display:grid; grid-template-columns:62px 18px 1fr; gap:4px; align-items:start}
+  .ev-k{color:var(--ink-faint); text-transform:uppercase; letter-spacing:.04em; font-size:10.5px; padding-top:1px}
+  .ev-t{color:var(--ink2)}
+  .gapfix p{margin:0 0 12px; font-size:13px; line-height:1.55}
+  .gap strong{color:var(--ink)} .fix strong{color:var(--vrm-d)}
+
+  /* method */
+  table.method{border-collapse:collapse; width:100%; font-size:13px; border:1px solid var(--ink)}
+  table.method td{border-bottom:1px solid var(--line); padding:11px 12px; vertical-align:top}
+  table.method tr:last-child td{border-bottom:none}
+  td.mw{font-weight:700; font-size:18px; width:46px; color:var(--vrm-d); text-align:center}
+  td.ml{font-weight:700; width:240px; color:var(--ink)}
+  td.my{color:var(--ink2); font-size:12.5px}
+  .note{font-size:12.5px; color:var(--ink-faint); margin-top:14px; line-height:1.6}
+
+  .patterns{display:grid; gap:14px}
+  .pat{border-left:3px solid var(--vrm); padding:4px 0 4px 16px}
+  .pat b{color:var(--ink)}
+  .pat .pt{color:var(--ink2); font-size:13.5px}
+
+  footer{border-top:3px double var(--ink); margin-top:48px; padding:26px 0 60px; font-size:13px; color:var(--ink2)}
+  footer .sig-l{font-weight:700; color:var(--ink); letter-spacing:.04em}
+  footer .fine{font-size:11.5px; color:var(--ink-faint); margin-top:12px; line-height:1.6}
+  .cta{border:1px solid var(--ink); padding:18px 20px; margin:8px 0 22px; background:var(--paper2)}
+  .cta p{margin:0; font-size:13.5px; color:var(--ink2)}
+  .cta .h{font-weight:700; color:var(--ink); display:block; margin-bottom:5px; letter-spacing:.02em}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="kick">greymoth · field report · 2026-06-25</p>
+  <h1>Japan-Readiness Index</h1>
+  <p class="sub">How ready are foreign developer tools for the Japanese market? A live audit of 40 popular tools — measured at the surface a Japanese buyer hits before they can adopt or pay.</p>
+  <p class="meta-line">Every signal below was checked <b>live against each company's own site</b> on 2026-06-25 — HTTP status, <b>&lt;html lang&gt;</b>, hreflang, rendered Japanese copy, pricing currency. Scores derive from the evidence; nothing is estimated.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="n">40</div><div class="l">tools scanned</div></div>
+    <div class="stat"><div class="n vrm">0</div><div class="l">have a 特商法 page</div></div>
+    <div class="stat"><div class="n vrm">0</div><div class="l">price in JPY</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">real Japanese site</div></div>
+  </div>
+  <div class="lede">
+    <strong>40 tools scanned. 0 have a 特商法 page. 0 price in JPY. Only 3 have a real Japanese-language site.</strong>
+    The average readiness score is 5.6/100; the highest any single tool reaches is 60. This isn't a story about bad products — it's a front door that's closed to Japan, and almost every gap is a static page, not product work.
+  </div>
+</header>
+
+<section>
+  <h2>The ranking <span class="c">— 40 tools</span></h2>
+  <div class="controls">
+    <button class="filt on" data-f="all">All</button>
+    <button class="filt" data-f="partial">Partial 30–69</button>
+    <button class="filt" data-f="closed">Closed 0–29</button>
+    <span class="legend">
+      <span><span class="m pass">●</span> pass</span>
+      <span><span class="m part">◐</span> partial</span>
+      <span><span class="m fail">○</span> absent</span>
+      <span><span class="m unv">?</span> unverified</span>
+    </span>
+  </div>
+  <div class="tbl-scroll">
+  <table class="lb">
+    <thead><tr>
+      <th>#</th><th>Tool</th><th>Category</th>
+      <th class="c">特商法</th><th class="c">JP site</th><th class="c">JP copy</th><th class="c">hreflang</th><th class="c">JPY</th>
+      <th class="c">Score</th><th>Tier</th><th></th>
+    </tr></thead>
+    
+    <tbody class="grp partial">
+      <tr class="row" data-tier="partial" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">01</td>
+        <td class="name"><span class="nm">Auth0</span><span class="site">auth0.com</span></td>
+        <td class="cat">Auth / Identity</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m pass" title="pass">●</span></td><td class="sig"><span class="m pass" title="pass">●</span></td><td class="sig"><span class="m pass" title="pass">●</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-partial">60</span></td>
+        <td class="tier"><span class="badge b-partial">PARTIAL</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Footer of auth0.com/jp shows Legal / Privacy / Terms only — no 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m pass" title="pass">●</span> <span class="ev-t">auth0.com/jp = HTTP 200, &lt;html lang=&quot;ja&quot;&gt;, fully Japanese marketing copy (heading 「Auth0：誰もが安全にアクセスするために。」, nav 開発者/製品/料金体系).</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m pass" title="pass">●</span> <span class="ev-t">Entire /jp site is native Japanese, including pricing page in Japanese.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m pass" title="pass">●</span> <span class="ev-t">Homepage HTML carries hrefLang=&quot;ja&quot;.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">auth0.com/jp/pricing is in Japanese but priced in USD: 「$35 / 月」, 「$385」. No JPY, no toggle.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Has the strongest JP localization in this index (full Japanese site, JP search-discoverable) — but still prices in USD and has no 特商法 page, the two procurement-gate items.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Add a 特商法に基づく表記 page to the /jp footer and a JPY display reference on the JP pricing page. Two static changes finish an otherwise JP-ready front door.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp partial">
+      <tr class="row" data-tier="partial" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">02</td>
+        <td class="name"><span class="nm">Twilio Segment</span><span class="site">twilio.com</span></td>
+        <td class="cat">CDP / Analytics</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m pass" title="pass">●</span></td><td class="sig"><span class="m pass" title="pass">●</span></td><td class="sig"><span class="m pass" title="pass">●</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-partial">60</span></td>
+        <td class="tier"><span class="badge b-partial">PARTIAL</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">twilio.com/ja-jp footer = privacy / security / terms / careers — no 特商法 link.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m pass" title="pass">●</span> <span class="ev-t">twilio.com/ja-jp = &lt;html lang=&quot;ja-jp&quot;&gt;, native Japanese marketing (heading 「驚くような顧客体験が生まれる場所」), Segment covered (「Twilio Segment 顧客データプラットフォーム」).</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m pass" title="pass">●</span> <span class="ev-t">Full Japanese engagement-platform copy across the /ja-jp site.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m pass" title="pass">●</span> <span class="ev-t">/ja redirects to /ja-jp; Twilio emits multi-locale hreflang.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Segment pricing is USD-only with no JPY display.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Segment rides Twilio's mature ja-jp site, so localization and JP discoverability are strong — but no 特商法 page and USD-only pricing remain.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Add 特商法 to the JP footer and a JPY pricing reference for the Segment line.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp partial">
+      <tr class="row" data-tier="partial" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">03</td>
+        <td class="name"><span class="nm">HashiCorp (Terraform / Vault)</span><span class="site">hashicorp.com</span></td>
+        <td class="cat">Infra / DevOps</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m pass" title="pass">●</span></td><td class="sig"><span class="m pass" title="pass">●</span></td><td class="sig"><span class="m unv" title="unverified">?</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-partial">45</span></td>
+        <td class="tier"><span class="badge b-partial">PARTIAL</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Footer of the JP site lists Terms / Trust Center / Trademark / Trade Controls — no 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m pass" title="pass">●</span> <span class="ev-t">hashicorp.com/ja = &lt;html lang=&quot;ja&quot;&gt;, full Japanese marketing copy (heading 「HashiCorp: イノベーションはインフラストラクチャからはじまります」, nav プラットフォーム/製品/開発者/会社情報).</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m pass" title="pass">●</span> <span class="ev-t">Extensive native Japanese product descriptions, case studies, webinars.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m unv" title="unverified">?</span> <span class="ev-t">Homepage hreflang not confirmed (bot rate-limit 429 on direct route probes); JP site itself renders lang=ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Cloud pricing is USD-denominated; no JPY toggle observed.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> A genuinely localized Japanese site — but missing the 特商法 page and JPY pricing that JP procurement and finance look for.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Publish a 特商法 page in the JP footer; add JPY reference pricing. The localization is already done — the commercial/legal surface lags it.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">04</td>
+        <td class="name"><span class="nm">Appwrite</span><span class="site">appwrite.io</span></td>
+        <td class="cat">BaaS (auth / DB / storage)</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m part" title="partial">◐</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">10</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page on appwrite.io.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">appwrite.io English-only, no /ja route, no language switcher.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m part" title="partial">◐</span> <span class="ev-t">Product ships a bundled Japanese UI locale: app/config/locale/translations/ja.json exists — but at 247 keys vs en 295 it is ~16% (48 keys) behind (gh raw-file count).</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja in homepage markup.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD-only pricing.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> The product UI has a Japanese locale — but it is measurably 16% behind English, and the marketing/commercial surface (site, pricing, 特商法) is fully English. The clearest 'quantifiable gap' case in this index.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Fill the 48 missing ja.json keys, then add a JP landing page + hreflang + 特商法 so JP buyers can find and approve it.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">05</td>
+        <td class="name"><span class="nm">Coolify</span><span class="site">coolify.io</span></td>
+        <td class="cat">Self-host PaaS</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m part" title="partial">◐</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">10</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page on coolify.io.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">English-only site, no /ja route.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m part" title="partial">◐</span> <span class="ev-t">Product ships a maintained Japanese UI (lang/ja.json), a peer of en.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Self-host dashboard is localized to Japanese, but the marketing site offers nothing for a Japanese buyer.</p>
+              <p class="fix"><strong>If you fixed it.</strong> A /ja landing page + hreflang + 特商法 page to match the already-localized product.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">06</td>
+        <td class="name"><span class="nm">Formbricks</span><span class="site">formbricks.com</span></td>
+        <td class="cat">Surveys / Experience</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m part" title="partial">◐</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">10</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">English-only site, no /ja route.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m part" title="partial">◐</span> <span class="ev-t">Product ships a Japanese UI (apps/web/locales/ja-JP.json), v4.0 ja support announced.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> In-product Japanese exists, but the commercial site is English-only with no 特商法 and no JP search presence.</p>
+              <p class="fix"><strong>If you fixed it.</strong> JP landing page + hreflang + 特商法 page.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">07</td>
+        <td class="name"><span class="nm">Logto</span><span class="site">logto.io</span></td>
+        <td class="cat">Auth / Authz</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m part" title="partial">◐</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">10</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page; USD pricing on logto.io.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">logto.io English-only; no /ja route.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m part" title="partial">◐</span> <span class="ev-t">Product ships a bundled ja UI locale (packages/phrases/src/locales/ja), a peer of en — but the marketing site has zero Japanese.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Solid in-product Japanese UI, but the buying surface (site, pricing, legal) is entirely English — JP buyers never see the localized product before procurement stalls.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Stand up a /ja landing page + hreflang + 特商法; the product is already JP-capable, only the front door isn't.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">08</td>
+        <td class="name"><span class="nm">ToolJet</span><span class="site">tooljet.com</span></td>
+        <td class="cat">Low-code / Internal tools</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m part" title="partial">◐</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">10</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">/tokushoho and /legal/tokushoho both 404; footer = Privacy/Terms only.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">/ja, /jp, /ja-jp, /japan all HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m part" title="partial">◐</span> <span class="ev-t">Product UI can now display Japanese via a community ja.json PR (all 822 keys), but the marketing site has no Japanese.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang/alternate ja in head.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: $0 / $79 / $199 per builder/mo; Enterprise from $3,000/mo; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> The builder UI is now Japanese-capable, but the commercial surface is English-only with no JPY and no 特商法 — JP buyers still stall before procurement.</p>
+              <p class="fix"><strong>If you fixed it.</strong> A /ja landing page + hreflang + 特商法 + JPY reference to match the now-localizable product.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">09</td>
+        <td class="name"><span class="nm">Umami</span><span class="site">umami.is</span></td>
+        <td class="cat">Privacy analytics</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m part" title="partial">◐</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">10</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">umami.is English-only, no /ja route.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m part" title="partial">◐</span> <span class="ev-t">Product ships and maintains a Japanese UI (public/intl/language/ja-JP.json).</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Dashboard is fully Japanese-capable and actively maintained, yet the site is English-only with no JP discoverability.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Localized landing page + hreflang + 特商法 to surface the JP-ready product to JP search.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">10</td>
+        <td class="name"><span class="nm">Algolia</span><span class="site">algolia.com</span></td>
+        <td class="cat">Search API</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">algolia.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Language switcher offers English/Deutsch/français/Brazilian Portuguese/Spanish/Italian — Japanese is NOT offered.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">3 hreflang tags present but none is ja (EN/DE/FR confirmed, no ja).</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Notably, Algolia DID localize — to European languages and Brazilian Portuguese — but deliberately skipped Japanese. The infrastructure exists; Japan was simply not prioritized.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Add ja to the existing language switcher + hreflang ja + a JP 特商法 page + JPY. The hardest part (i18n infra) is already built.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">11</td>
+        <td class="name"><span class="nm">Appsmith</span><span class="site">appsmith.com</span></td>
+        <td class="cat">Low-code / Internal tools</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 notice on the site.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">www.appsmith.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;; no switcher.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content; the editor has no i18n layer (1,310 hardcoded English TS string constants, no i18n library in client deps).</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags in homepage HTML.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only ($0/$15/$22 tiers); no ¥/JPY/€.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Zero JP localization at both layers, and the editor lacks any i18n foundation (open issue #4404 since 2021, de-prioritized). JP-readiness here is an i18n-infra + GTM project, not a drop-in fix.</p>
+              <p class="fix"><strong>If you fixed it.</strong> GTM surface (特商法 + /ja + hreflang + JPY) is the quick layer; product Japanese requires building the i18n foundation first.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">12</td>
+        <td class="name"><span class="nm">BrowserStack</span><span class="site">browserstack.com</span></td>
+        <td class="cat">Testing / QA</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">browserstack.com/ja and /guide/ja both HTTP 404; &lt;html lang=&quot;en-US&quot;&gt;; no clean /ja site.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No localized Japanese marketing site.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags in homepage HTML.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> No clean Japanese site path; the front door is English/USD with no 特商法.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + a real /ja site + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">13</td>
+        <td class="name"><span class="nm">Clerk</span><span class="site">clerk.com</span></td>
+        <td class="cat">Auth / Identity</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page; footer = Pricing/Docs/Blog/Changelog.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">clerk.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;; no switcher.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese text on the site.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags in homepage HTML.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: Free, $25/mo Pro, $300/mo Business, etc.; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Popular auth choice for JP indie/startup stacks, but the entire surface is English/USD with no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 page + /ja landing + hreflang + JPY reference; a bundled ja for the prebuilt auth components would also help.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">14</td>
+        <td class="name"><span class="nm">Contentful</span><span class="site">contentful.com</span></td>
+        <td class="cat">Headless CMS</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">contentful.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: $0/forever, $300/month; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only; no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">15</td>
+        <td class="name"><span class="nm">Directus</span><span class="site">directus.io</span></td>
+        <td class="cat">Headless CMS / Data platform</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">directus.io (→directus.com) /ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content on the marketing site.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only marketing surface; no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">16</td>
+        <td class="name"><span class="nm">Doppler</span><span class="site">doppler.com</span></td>
+        <td class="cat">Secrets management</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">doppler.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only; no JP entry point. As with Infisical, JP copy for a secrets tool needs security-literate native review.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">17</td>
+        <td class="name"><span class="nm">Flagsmith</span><span class="site">flagsmith.com</span></td>
+        <td class="cat">Feature flags</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 notice.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">&lt;html lang=&quot;en&quot;&gt;; no /ja path or switcher in markup.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content; no i18n layer in the React frontend (no translation lib, hardcoded English JSX across ~160 of 671 components).</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang tags in HTML.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD: $7/$50/$60 per month (one stray £); no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Same as Unleash — real JP feature-flag demand, but no product i18n and no JP marketing surface.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Product i18n foundation + ja; site 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">18</td>
+        <td class="name"><span class="nm">Fly.io</span><span class="site">fly.io</span></td>
+        <td class="cat">Hosting / PaaS</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">fly.io/ja = HTTP 404; &lt;html lang=&quot;en-US&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only; no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">19</td>
+        <td class="name"><span class="nm">Hasura</span><span class="site">hasura.io</span></td>
+        <td class="cat">GraphQL / API</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">hasura.io/ja = HTTP 404; &lt;html lang=&quot;en-US&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only; no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">20</td>
+        <td class="name"><span class="nm">Infisical</span><span class="site">infisical.com</span></td>
+        <td class="cat">Secrets management</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Footer = Terms/Privacy/Subprocessors/SLA — no 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">infisical.com/ja returns HTTP 404; docs English-only; no switcher.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese text on the site.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang on top page or docs.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only ($0/mo, $18/mo); no currency switcher.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Has JP developer awareness (Qiita/Zenn writeups) but no localized surface. For a secrets tool, future JP copy must be security-literate native review, not raw MT — a mistranslated scope/rotation instruction is a security incident.</p>
+              <p class="fix"><strong>If you fixed it.</strong> A /legal/tokushoho page, a /ja landing + top-10 docs, hreflang ja, and a JPY reference price.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">21</td>
+        <td class="name"><span class="nm">Inngest</span><span class="site">inngest.com</span></td>
+        <td class="cat">Workflow / Background jobs</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Footer = /privacy, /terms, /security only — no 特商法.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">inngest.com/ja and /ja/docs both HTTP 404; docs English-only, no switcher.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese copy on the site.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD: Hobby $0/mo, Pro from $75/mo; no JPY; no 消費税 line.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Durable-execution is conceptual — adoption hinges on docs readability. English-only docs leak the very JP evaluators Inngest already attracts on Zenn/Qiita; the dev gets interested, then loses the thread translating concurrency semantics under deadline.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 page, /ja landing + Quick Start, hreflang, JPY + 消費税 line, and translate the 5-10 highest-traffic docs pages first.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">22</td>
+        <td class="name"><span class="nm">Linear</span><span class="site">linear.app</span></td>
+        <td class="cat">Project management</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">linear.app/ja = HTTP 200 but renders an English 'Loading…' SPA shell (0 Japanese chars) — not a localized page.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No rendered Japanese marketing copy.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Like Vercel, /ja is an English SPA shell, not real localization. The front door is closed despite the route returning 200.</p>
+              <p class="fix"><strong>If you fixed it.</strong> A genuinely localized /ja landing + hreflang + 特商法 + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">23</td>
+        <td class="name"><span class="nm">Mux</span><span class="site">mux.com</span></td>
+        <td class="cat">Video API</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">mux.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only; no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">24</td>
+        <td class="name"><span class="nm">n8n</span><span class="site">n8n.io</span></td>
+        <td class="cat">Workflow automation</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">n8n.io/ja 301-redirects to /ja/ which returns HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> A /ja redirect exists but lands on 404 — no real localization. English-only surface.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + a real /ja landing + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">25</td>
+        <td class="name"><span class="nm">Neon</span><span class="site">neon.com</span></td>
+        <td class="cat">Database (serverless Postgres)</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">neon.com/ja = HTTP 404 (neon.tech 308-redirects to neon.com); &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content or switcher.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: $0/month, $0.106/CU-hour, etc.; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Serverless Postgres is a natural fit for JP SaaS, but the site is fully English/USD with no JP route.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja landing + hreflang + JPY toggle.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">26</td>
+        <td class="name"><span class="nm">Novu</span><span class="site">novu.co</span></td>
+        <td class="cat">Notification infra</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">novu.co English-only; no /ja.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Dashboard/web app UI has no ja locale (content i18n is a feature, but the admin UI is English).</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> High-profile (39k+ stars) but the management UI and the whole marketing surface are English-only.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Dashboard ja locale; 特商法 + /ja + hreflang + JPY for the site.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">27</td>
+        <td class="name"><span class="nm">PlanetScale</span><span class="site">planetscale.com</span></td>
+        <td class="cat">Database (MySQL)</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">planetscale.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content or switcher.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: $5/mo, $15, $50/mo, $0.06/GB; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> No Japanese surface at all; a JP buyer cannot evaluate or approve it without FX guesswork.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">28</td>
+        <td class="name"><span class="nm">PostHog</span><span class="site">posthog.com</span></td>
+        <td class="cat">Product analytics</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Footer = Terms/Privacy/DPA/SOC 2/HIPAA — no 特商法.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">posthog.com/ja = HTTP 404; no &lt;html lang&gt; found; no switcher.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">States 'All prices are in US Dollars (USD), excluding taxes.' No ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Explicitly USD-only and English-only; no JP surface.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">29</td>
+        <td class="name"><span class="nm">Railway</span><span class="site">railway.com</span></td>
+        <td class="cat">Hosting / PaaS</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">railway.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Popular with JP indie devs, but no localized surface and no 特商法.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">30</td>
+        <td class="name"><span class="nm">Render</span><span class="site">render.com</span></td>
+        <td class="cat">Hosting / PaaS</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">render.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only; no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">31</td>
+        <td class="name"><span class="nm">Retool</span><span class="site">retool.com</span></td>
+        <td class="cat">Low-code / Internal tools</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">retool.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: Builder $10/mo (annual), $50/mo (Business); no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Strong internal-tools demand in JP enterprise, but English/USD-only with no 特商法.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">32</td>
+        <td class="name"><span class="nm">Sanity</span><span class="site">sanity.io</span></td>
+        <td class="cat">Headless CMS</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">sanity.io/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: $0/forever, $15 per seat/month; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only; no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">33</td>
+        <td class="name"><span class="nm">Sentry</span><span class="site">sentry.io</span></td>
+        <td class="cat">Observability / Error monitoring</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 link on the pricing page or footer.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">sentry.io/ja redirects to /auth/login/ja/ (an English login page with a ja locale param) — no Japanese marketing site.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese marketing copy; the /ja redirect lands on an English login (lang=en, 0 JP chars).</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja in homepage HTML.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: $0, $26/mo, $80/mo; no ¥; no currency switcher.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> The /ja route is only a login-form locale, not a localized site. JP buyers see English/USD throughout with no 特商法.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + a real /ja marketing landing + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">34</td>
+        <td class="name"><span class="nm">Supabase</span><span class="site">supabase.com</span></td>
+        <td class="cat">BaaS (Postgres / auth / storage)</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">supabase.com/ja = HTTP 404 (308 trailing-slash then 404); &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content on the marketing site.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: $0/$25/month tiers; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Huge JP developer mindshare, zero localized front door — JP traffic lands on an English/USD page with no 特商法.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja landing + hreflang + JPY; docs translation for the highest-traffic guides.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">35</td>
+        <td class="name"><span class="nm">SuperTokens</span><span class="site">supertokens.com</span></td>
+        <td class="cat">Auth</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">supertokens.com English-only; no /ja.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Auth UI has an i18n hook (translationFunc) but ships no bundled ja translation (only an example).</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Auth UI in Japanese is often mandatory for JP adoption, yet no bundled ja locale ships and the site is English-only.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Ship a bundled ja login-UI locale; 特商法 + /ja + hreflang + JPY for the site.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">36</td>
+        <td class="name"><span class="nm">Turso</span><span class="site">turso.tech</span></td>
+        <td class="cat">Database (edge SQLite)</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Footer lists Terms/Privacy/Trust/About/Contact/Support — no 特商法; /terms-of-use = CHISELSTRIKE INC., Delaware.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">turso.tech/ja and docs.turso.tech/ja both return HTTP 404; no language switcher.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese text anywhere on site or docs.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD only: $0, $4.99/mo, $24.92/mo, $416.58/mo, $0.75/GB. No JPY, no toggle.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Strong organic pull with Japanese indie/SaaS devs (libSQL/edge-SQLite), but every JP-facing surface is missing — the front door is fully closed at the procurement and finance gate.</p>
+              <p class="fix"><strong>If you fixed it.</strong> One static 特商法 page + a /ja landing + translated quickstart + hreflang + a JPY display toggle. All footer/page-level, no product change.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">37</td>
+        <td class="name"><span class="nm">Unleash</span><span class="site">getunleash.io</span></td>
+        <td class="cat">Feature flags</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">getunleash.io &lt;html lang=&quot;en&quot;&gt;; no /ja; no switcher.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Dashboard English-only; no UI i18n framework (only date-fns date locales).</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD: $0/$79/$199.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Feature-flag demand is solid among JP SaaS/enterprise, but the product is English-only and the site has zero JP presence.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Add a UI i18n layer + ja for the product; 特商法 + /ja + hreflang + JPY for the site.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">38</td>
+        <td class="name"><span class="nm">Upstash</span><span class="site">upstash.com</span></td>
+        <td class="cat">Database (serverless Redis/Kafka)</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">upstash.com/ja = HTTP 404; &lt;html lang=&quot;en&quot;&gt;.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No Japanese content.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> English/USD-only; no JP entry point.</p>
+              <p class="fix"><strong>If you fixed it.</strong> 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">39</td>
+        <td class="name"><span class="nm">Vercel</span><span class="site">vercel.com</span></td>
+        <td class="cat">Hosting / Frontend cloud</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">vercel.com/ja = HTTP 200 but is an English dashboard SPA shell (&lt;html lang=&quot;en-US&quot;&gt;, 0 Japanese chars) — a locale param, not a localized site.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No rendered Japanese marketing copy.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">0 hreflang tags in homepage HTML.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing; no ¥.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> The /ja route exists but serves English — a textbook 'looks localized, isn't' case. No real Japanese marketing site, no 特商法, no JPY.</p>
+              <p class="fix"><strong>If you fixed it.</strong> Turn /ja into a real localized landing page (not an English shell) + hreflang + 特商法 + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+    <tbody class="grp closed">
+      <tr class="row" data-tier="closed" onclick="this.closest('tbody').classList.toggle('open')">
+        <td class="rank">40</td>
+        <td class="name"><span class="nm">Windmill</span><span class="site">windmill.dev</span></td>
+        <td class="cat">Developer platform / Workflow</td>
+        <td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td><td class="sig"><span class="m fail" title="absent">○</span></td>
+        <td class="score"><span class="sc sc-closed">0</span></td>
+        <td class="tier"><span class="badge b-closed">CLOSED</span></td>
+        <td class="exp">▸</td>
+      </tr>
+      <tr class="detail">
+        <td colspan="10">
+          <div class="detail-in">
+            <div class="ev"><div class="ev-row"><span class="ev-k">特商法</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No 特商法 page.</span></div><div class="ev-row"><span class="ev-k">JP site</span> <span class="m fail" title="absent">○</span> <span class="ev-t">windmill.dev English-only; no /ja.</span></div><div class="ev-row"><span class="ev-k">JP copy</span> <span class="m fail" title="absent">○</span> <span class="ev-t">Product UI (Svelte) has no i18n layer; English-only.</span></div><div class="ev-row"><span class="ev-k">hreflang</span> <span class="m fail" title="absent">○</span> <span class="ev-t">No hreflang ja.</span></div><div class="ev-row"><span class="ev-k">JPY</span> <span class="m fail" title="absent">○</span> <span class="ev-t">USD pricing.</span></div></div>
+            <div class="gapfix">
+              <p class="gap"><strong>Gap.</strong> Workflow/automation has JP developer demand, but neither product nor site offers Japanese.</p>
+              <p class="fix"><strong>If you fixed it.</strong> UI i18n foundation + ja; site 特商法 + /ja + hreflang + JPY.</p>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">Click any row for the per-signal evidence, the gap, and the one-line fix. Tiers: 70–100 JP-ready · 30–69 partial · 0–29 closed. No tool reached the top tier.</p>
+</section>
+
+<section>
+  <h2>How it's scored</h2>
+  <table class="method">
+    <tbody><tr><td class="mw">25</td><td class="ml">特商法 page (Specified Commercial Transactions Act)</td><td class="my">Legally expected for any paid online service sold in Japan. Its absence is a hard stop for many corporate procurement / legal teams — the deal dies before engineering is ever evaluated.</td></tr><tr><td class="mw">25</td><td class="ml">Localized Japanese site / /ja route</td><td class="my">A real Japanese-language entry point. Scored on rendered Japanese marketing copy, not on a route merely existing — an English SPA shell served at /ja scores zero.</td></tr><tr><td class="mw">20</td><td class="ml">Japanese content / language switcher</td><td class="my">Any genuine Japanese copy or a switcher that offers Japanese. Partial credit for token Japanese; zero for none.</td></tr><tr><td class="mw">15</td><td class="ml">hreflang=&quot;ja&quot; alternate</td><td class="my">Without it, Japanese-language search traffic never lands on a localized page — invisible in JP Google results.</td></tr><tr><td class="mw">15</td><td class="ml">JPY pricing / currency</td><td class="my">USD-only forces JP finance to FX-convert and absorb forex fees, and gives them no clean number to approve. A JPY display toggle is enough; billing can stay USD.</td></tr></tbody>
+  </table>
+  <p class="note">Every signal below was checked live against each company's own public marketing site on 2026-06-25 using direct HTTP requests (status codes, HTML lang, hreflang) and rendered-page reads (Japanese copy, pricing currency). No estimates. Scores are reproducible from the evidence column. Sites are the property of their respective owners; this report quotes only publicly observable facts. A <b>200</b> on /ja that resolves to an English SPA shell or a login page (Vercel, Linear, Sentry) is <b>not</b> counted as localization — this index scores rendered Japanese copy, not the mere existence of a route. Where a check couldn't be confirmed it is marked <b>?</b> and scored as a fail, not guessed up.</p>
+</section>
+
+<section>
+  <h2>Three patterns</h2>
+  <div class="patterns">
+    <div class="pat"><span class="pt"><b>"Looks localized, isn't."</b> Vercel, Linear and Sentry all return 200 on /ja — but the page is an English shell or a login form with a locale param, not a localized site (lang="en", zero Japanese characters). A route existing is not localization.</span></div>
+    <div class="pat"><span class="pt"><b>Localized everywhere except Japan.</b> Algolia built the whole i18n machine — English, German, French, Brazilian Portuguese, Spanish, Italian. Japanese is the one major market it skipped. The hard part is already done.</span></div>
+    <div class="pat"><span class="pt"><b>The product is ready; the storefront isn't.</b> Appwrite, Logto, Coolify, Umami, Formbricks and ToolJet ship a Japanese product UI — yet a JP buyer sees an English site, USD pricing and no 特商法, and never learns the product speaks Japanese.</span></div>
+    <div class="pat"><span class="pt"><b>And the universal one:</b> 特商法 is missing everywhere — 0 of 40. It is one static page. Its absence quietly disqualifies a vendor from many Japanese corporate purchases, and most teams never hear why the deal went quiet.</span></div>
+  </div>
+</section>
+
+<footer>
+  <div class="cta">
+    <p><span class="h">If you run one of these tools —</span> the entire closed-tier gap is usually footer-and-page-level work, not engineering: a 特商法 page, a real /ja landing, hreflang ja, and a JPY display. Native review, not raw machine translation — which matters most for the security tools here, where a mistranslated scope or rotation step is an incident, not a typo. There's a one-page map with the exact evidence and fix for each tool above.</p>
+  </div>
+  <p><span class="sig-l">greymoth</span> — Japan-market readiness &amp; localization for foreign developer tools.<br>
+  <a href="https://greymoth-jp.github.io/proof-dashboard">greymoth-jp.github.io/proof-dashboard</a> · glovrex</p>
+  <p class="fine">Scan date 2026-06-25. Data: <b>index_data.json</b> (same directory). All sites are the property of their owners; this report quotes only publicly observable facts (HTTP status codes, page language, on-page currency and copy). Corrections welcome — every claim links to a live, checkable source. Not affiliated with, endorsed by, or sponsored by any company listed.</p>
+</footer>
+
+</div>
+<script>
+  document.querySelectorAll('.filt').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.filt').forEach(function(x){x.classList.remove('on')});
+      b.classList.add('on');
+      var f=b.dataset.f;
+      document.querySelectorAll('tbody.grp').forEach(function(g){
+        var t=g.querySelector('tr.row').dataset.tier;
+        g.style.display=(f==='all'||f===t)?'':'none';
+      });
+    });
+  });
+</script>
+</body>
+</html>

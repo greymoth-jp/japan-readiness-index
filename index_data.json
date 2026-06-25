@@ -1,0 +1,1452 @@
+{
+  "meta": {
+    "title": "Japan-Readiness Index",
+    "subtitle": "How ready are foreign developer tools for the Japanese market?",
+    "scan_date": "2026-06-25",
+    "author": "greymoth",
+    "author_url": "https://greymoth-jp.github.io/proof-dashboard",
+    "method_note": "Every signal below was checked live against each company's own public marketing site on 2026-06-25 using direct HTTP requests (status codes, HTML lang, hreflang) and rendered-page reads (Japanese copy, pricing currency). No estimates. Scores are reproducible from the evidence column. Sites are the property of their respective owners; this report quotes only publicly observable facts.",
+    "scoring": {
+      "max": 100,
+      "signals": [
+        {
+          "key": "tokushoho",
+          "label": "特商法 page (Specified Commercial Transactions Act)",
+          "weight": 25,
+          "why": "Legally expected for any paid online service sold in Japan. Its absence is a hard stop for many corporate procurement / legal teams — the deal dies before engineering is ever evaluated."
+        },
+        {
+          "key": "ja_site",
+          "label": "Localized Japanese site / /ja route",
+          "weight": 25,
+          "why": "A real Japanese-language entry point. Scored on rendered Japanese marketing copy, not on a route merely existing — an English SPA shell served at /ja scores zero."
+        },
+        {
+          "key": "jp_content",
+          "label": "Japanese content / language switcher",
+          "weight": 20,
+          "why": "Any genuine Japanese copy or a switcher that offers Japanese. Partial credit for token Japanese; zero for none."
+        },
+        {
+          "key": "hreflang_ja",
+          "label": "hreflang=\"ja\" alternate",
+          "weight": 15,
+          "why": "Without it, Japanese-language search traffic never lands on a localized page — invisible in JP Google results."
+        },
+        {
+          "key": "jpy_pricing",
+          "label": "JPY pricing / currency",
+          "weight": 15,
+          "why": "USD-only forces JP finance to FX-convert and absorb forex fees, and gives them no clean number to approve. A JPY display toggle is enough; billing can stay USD."
+        }
+      ]
+    },
+    "tiers": {
+      "ready": "70-100 — JP-ready front door",
+      "partial": "30-69 — partial / localized but gaps remain",
+      "closed": "0-29 — front door closed to Japan"
+    }
+  },
+  "companies": [
+    {
+      "name": "Auth0",
+      "category": "Auth / Identity",
+      "site": "auth0.com",
+      "score": 60,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "Footer of auth0.com/jp shows Legal / Privacy / Terms only — no 特商法 page."
+        },
+        "ja_site": {
+          "pass": true,
+          "value": "full",
+          "evidence": "auth0.com/jp = HTTP 200, <html lang=\"ja\">, fully Japanese marketing copy (heading 「Auth0：誰もが安全にアクセスするために。」, nav 開発者/製品/料金体系)."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "full",
+          "evidence": "Entire /jp site is native Japanese, including pricing page in Japanese."
+        },
+        "hreflang_ja": {
+          "pass": true,
+          "value": "present",
+          "evidence": "Homepage HTML carries hrefLang=\"ja\"."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "auth0.com/jp/pricing is in Japanese but priced in USD: 「$35 / 月」, 「$385」. No JPY, no toggle."
+        }
+      },
+      "gap": "Has the strongest JP localization in this index (full Japanese site, JP search-discoverable) — but still prices in USD and has no 特商法 page, the two procurement-gate items.",
+      "fix": "Add a 特商法に基づく表記 page to the /jp footer and a JPY display reference on the JP pricing page. Two static changes finish an otherwise JP-ready front door."
+    },
+    {
+      "name": "Twilio Segment",
+      "category": "CDP / Analytics",
+      "site": "twilio.com",
+      "score": 60,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "twilio.com/ja-jp footer = privacy / security / terms / careers — no 特商法 link."
+        },
+        "ja_site": {
+          "pass": true,
+          "value": "full",
+          "evidence": "twilio.com/ja-jp = <html lang=\"ja-jp\">, native Japanese marketing (heading 「驚くような顧客体験が生まれる場所」), Segment covered (「Twilio Segment 顧客データプラットフォーム」)."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "full",
+          "evidence": "Full Japanese engagement-platform copy across the /ja-jp site."
+        },
+        "hreflang_ja": {
+          "pass": true,
+          "value": "present",
+          "evidence": "/ja redirects to /ja-jp; Twilio emits multi-locale hreflang."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "Segment pricing is USD-only with no JPY display."
+        }
+      },
+      "gap": "Segment rides Twilio's mature ja-jp site, so localization and JP discoverability are strong — but no 特商法 page and USD-only pricing remain.",
+      "fix": "Add 特商法 to the JP footer and a JPY pricing reference for the Segment line."
+    },
+    {
+      "name": "HashiCorp (Terraform / Vault)",
+      "category": "Infra / DevOps",
+      "site": "hashicorp.com",
+      "score": 45,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "Footer of the JP site lists Terms / Trust Center / Trademark / Trade Controls — no 特商法 page."
+        },
+        "ja_site": {
+          "pass": true,
+          "value": "full",
+          "evidence": "hashicorp.com/ja = <html lang=\"ja\">, full Japanese marketing copy (heading 「HashiCorp: イノベーションはインフラストラクチャからはじまります」, nav プラットフォーム/製品/開発者/会社情報)."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "full",
+          "evidence": "Extensive native Japanese product descriptions, case studies, webinars."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "unverified",
+          "evidence": "Homepage hreflang not confirmed (bot rate-limit 429 on direct route probes); JP site itself renders lang=ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "Cloud pricing is USD-denominated; no JPY toggle observed."
+        }
+      },
+      "gap": "A genuinely localized Japanese site — but missing the 特商法 page and JPY pricing that JP procurement and finance look for.",
+      "fix": "Publish a 特商法 page in the JP footer; add JPY reference pricing. The localization is already done — the commercial/legal surface lags it."
+    },
+    {
+      "name": "Appwrite",
+      "category": "BaaS (auth / DB / storage)",
+      "site": "appwrite.io",
+      "score": 10,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page on appwrite.io."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "appwrite.io English-only, no /ja route, no language switcher."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "partial",
+          "evidence": "Product ships a bundled Japanese UI locale: app/config/locale/translations/ja.json exists — but at 247 keys vs en 295 it is ~16% (48 keys) behind (gh raw-file count)."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja in homepage markup."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD-only pricing."
+        }
+      },
+      "gap": "The product UI has a Japanese locale — but it is measurably 16% behind English, and the marketing/commercial surface (site, pricing, 特商法) is fully English. The clearest 'quantifiable gap' case in this index.",
+      "fix": "Fill the 48 missing ja.json keys, then add a JP landing page + hreflang + 特商法 so JP buyers can find and approve it."
+    },
+    {
+      "name": "Coolify",
+      "category": "Self-host PaaS",
+      "site": "coolify.io",
+      "score": 10,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page on coolify.io."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "English-only site, no /ja route."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "partial",
+          "evidence": "Product ships a maintained Japanese UI (lang/ja.json), a peer of en."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing."
+        }
+      },
+      "gap": "Self-host dashboard is localized to Japanese, but the marketing site offers nothing for a Japanese buyer.",
+      "fix": "A /ja landing page + hreflang + 特商法 page to match the already-localized product."
+    },
+    {
+      "name": "Formbricks",
+      "category": "Surveys / Experience",
+      "site": "formbricks.com",
+      "score": 10,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "English-only site, no /ja route."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "partial",
+          "evidence": "Product ships a Japanese UI (apps/web/locales/ja-JP.json), v4.0 ja support announced."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing."
+        }
+      },
+      "gap": "In-product Japanese exists, but the commercial site is English-only with no 特商法 and no JP search presence.",
+      "fix": "JP landing page + hreflang + 特商法 page."
+    },
+    {
+      "name": "Logto",
+      "category": "Auth / Authz",
+      "site": "logto.io",
+      "score": 10,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page; USD pricing on logto.io."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "logto.io English-only; no /ja route."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "partial",
+          "evidence": "Product ships a bundled ja UI locale (packages/phrases/src/locales/ja), a peer of en — but the marketing site has zero Japanese."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing."
+        }
+      },
+      "gap": "Solid in-product Japanese UI, but the buying surface (site, pricing, legal) is entirely English — JP buyers never see the localized product before procurement stalls.",
+      "fix": "Stand up a /ja landing page + hreflang + 特商法; the product is already JP-capable, only the front door isn't."
+    },
+    {
+      "name": "ToolJet",
+      "category": "Low-code / Internal tools",
+      "site": "tooljet.com",
+      "score": 10,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "/tokushoho and /legal/tokushoho both 404; footer = Privacy/Terms only."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "/ja, /jp, /ja-jp, /japan all HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "partial",
+          "evidence": "Product UI can now display Japanese via a community ja.json PR (all 822 keys), but the marketing site has no Japanese."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang/alternate ja in head."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: $0 / $79 / $199 per builder/mo; Enterprise from $3,000/mo; no ¥."
+        }
+      },
+      "gap": "The builder UI is now Japanese-capable, but the commercial surface is English-only with no JPY and no 特商法 — JP buyers still stall before procurement.",
+      "fix": "A /ja landing page + hreflang + 特商法 + JPY reference to match the now-localizable product."
+    },
+    {
+      "name": "Umami",
+      "category": "Privacy analytics",
+      "site": "umami.is",
+      "score": 10,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "umami.is English-only, no /ja route."
+        },
+        "jp_content": {
+          "pass": true,
+          "value": "partial",
+          "evidence": "Product ships and maintains a Japanese UI (public/intl/language/ja-JP.json)."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing."
+        }
+      },
+      "gap": "Dashboard is fully Japanese-capable and actively maintained, yet the site is English-only with no JP discoverability.",
+      "fix": "Localized landing page + hreflang + 特商法 to surface the JP-ready product to JP search."
+    },
+    {
+      "name": "Algolia",
+      "category": "Search API",
+      "site": "algolia.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "algolia.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "Language switcher offers English/Deutsch/français/Brazilian Portuguese/Spanish/Italian — Japanese is NOT offered."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "3 hreflang tags present but none is ja (EN/DE/FR confirmed, no ja)."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "Notably, Algolia DID localize — to European languages and Brazilian Portuguese — but deliberately skipped Japanese. The infrastructure exists; Japan was simply not prioritized.",
+      "fix": "Add ja to the existing language switcher + hreflang ja + a JP 特商法 page + JPY. The hardest part (i18n infra) is already built."
+    },
+    {
+      "name": "Appsmith",
+      "category": "Low-code / Internal tools",
+      "site": "appsmith.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 notice on the site."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "www.appsmith.com/ja = HTTP 404; <html lang=\"en\">; no switcher."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content; the editor has no i18n layer (1,310 hardcoded English TS string constants, no i18n library in client deps)."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags in homepage HTML."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only ($0/$15/$22 tiers); no ¥/JPY/€."
+        }
+      },
+      "gap": "Zero JP localization at both layers, and the editor lacks any i18n foundation (open issue #4404 since 2021, de-prioritized). JP-readiness here is an i18n-infra + GTM project, not a drop-in fix.",
+      "fix": "GTM surface (特商法 + /ja + hreflang + JPY) is the quick layer; product Japanese requires building the i18n foundation first."
+    },
+    {
+      "name": "BrowserStack",
+      "category": "Testing / QA",
+      "site": "browserstack.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "browserstack.com/ja and /guide/ja both HTTP 404; <html lang=\"en-US\">; no clean /ja site."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No localized Japanese marketing site."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags in homepage HTML."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "No clean Japanese site path; the front door is English/USD with no 特商法.",
+      "fix": "特商法 + a real /ja site + hreflang + JPY."
+    },
+    {
+      "name": "Clerk",
+      "category": "Auth / Identity",
+      "site": "clerk.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page; footer = Pricing/Docs/Blog/Changelog."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "clerk.com/ja = HTTP 404; <html lang=\"en\">; no switcher."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese text on the site."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags in homepage HTML."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: Free, $25/mo Pro, $300/mo Business, etc.; no ¥."
+        }
+      },
+      "gap": "Popular auth choice for JP indie/startup stacks, but the entire surface is English/USD with no JP entry point.",
+      "fix": "特商法 page + /ja landing + hreflang + JPY reference; a bundled ja for the prebuilt auth components would also help."
+    },
+    {
+      "name": "Contentful",
+      "category": "Headless CMS",
+      "site": "contentful.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "contentful.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: $0/forever, $300/month; no ¥."
+        }
+      },
+      "gap": "English/USD-only; no JP entry point.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Directus",
+      "category": "Headless CMS / Data platform",
+      "site": "directus.io",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "directus.io (→directus.com) /ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content on the marketing site."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "English/USD-only marketing surface; no JP entry point.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Doppler",
+      "category": "Secrets management",
+      "site": "doppler.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "doppler.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "English/USD-only; no JP entry point. As with Infisical, JP copy for a secrets tool needs security-literate native review.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Flagsmith",
+      "category": "Feature flags",
+      "site": "flagsmith.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 notice."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "<html lang=\"en\">; no /ja path or switcher in markup."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content; no i18n layer in the React frontend (no translation lib, hardcoded English JSX across ~160 of 671 components)."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang tags in HTML."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD: $7/$50/$60 per month (one stray £); no ¥."
+        }
+      },
+      "gap": "Same as Unleash — real JP feature-flag demand, but no product i18n and no JP marketing surface.",
+      "fix": "Product i18n foundation + ja; site 特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Fly.io",
+      "category": "Hosting / PaaS",
+      "site": "fly.io",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "fly.io/ja = HTTP 404; <html lang=\"en-US\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "English/USD-only; no JP entry point.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Hasura",
+      "category": "GraphQL / API",
+      "site": "hasura.io",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "hasura.io/ja = HTTP 404; <html lang=\"en-US\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "English/USD-only; no JP entry point.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Infisical",
+      "category": "Secrets management",
+      "site": "infisical.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "Footer = Terms/Privacy/Subprocessors/SLA — no 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "infisical.com/ja returns HTTP 404; docs English-only; no switcher."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese text on the site."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang on top page or docs."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only ($0/mo, $18/mo); no currency switcher."
+        }
+      },
+      "gap": "Has JP developer awareness (Qiita/Zenn writeups) but no localized surface. For a secrets tool, future JP copy must be security-literate native review, not raw MT — a mistranslated scope/rotation instruction is a security incident.",
+      "fix": "A /legal/tokushoho page, a /ja landing + top-10 docs, hreflang ja, and a JPY reference price."
+    },
+    {
+      "name": "Inngest",
+      "category": "Workflow / Background jobs",
+      "site": "inngest.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "Footer = /privacy, /terms, /security only — no 特商法."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "inngest.com/ja and /ja/docs both HTTP 404; docs English-only, no switcher."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese copy on the site."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD: Hobby $0/mo, Pro from $75/mo; no JPY; no 消費税 line."
+        }
+      },
+      "gap": "Durable-execution is conceptual — adoption hinges on docs readability. English-only docs leak the very JP evaluators Inngest already attracts on Zenn/Qiita; the dev gets interested, then loses the thread translating concurrency semantics under deadline.",
+      "fix": "特商法 page, /ja landing + Quick Start, hreflang, JPY + 消費税 line, and translate the 5-10 highest-traffic docs pages first."
+    },
+    {
+      "name": "Linear",
+      "category": "Project management",
+      "site": "linear.app",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "linear.app/ja = HTTP 200 but renders an English 'Loading…' SPA shell (0 Japanese chars) — not a localized page."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No rendered Japanese marketing copy."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "Like Vercel, /ja is an English SPA shell, not real localization. The front door is closed despite the route returning 200.",
+      "fix": "A genuinely localized /ja landing + hreflang + 特商法 + JPY."
+    },
+    {
+      "name": "Mux",
+      "category": "Video API",
+      "site": "mux.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "mux.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "English/USD-only; no JP entry point.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "n8n",
+      "category": "Workflow automation",
+      "site": "n8n.io",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "n8n.io/ja 301-redirects to /ja/ which returns HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "A /ja redirect exists but lands on 404 — no real localization. English-only surface.",
+      "fix": "特商法 + a real /ja landing + hreflang + JPY."
+    },
+    {
+      "name": "Neon",
+      "category": "Database (serverless Postgres)",
+      "site": "neon.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "neon.com/ja = HTTP 404 (neon.tech 308-redirects to neon.com); <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content or switcher."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: $0/month, $0.106/CU-hour, etc.; no ¥."
+        }
+      },
+      "gap": "Serverless Postgres is a natural fit for JP SaaS, but the site is fully English/USD with no JP route.",
+      "fix": "特商法 + /ja landing + hreflang + JPY toggle."
+    },
+    {
+      "name": "Novu",
+      "category": "Notification infra",
+      "site": "novu.co",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "novu.co English-only; no /ja."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "Dashboard/web app UI has no ja locale (content i18n is a feature, but the admin UI is English)."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing."
+        }
+      },
+      "gap": "High-profile (39k+ stars) but the management UI and the whole marketing surface are English-only.",
+      "fix": "Dashboard ja locale; 特商法 + /ja + hreflang + JPY for the site."
+    },
+    {
+      "name": "PlanetScale",
+      "category": "Database (MySQL)",
+      "site": "planetscale.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "planetscale.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content or switcher."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: $5/mo, $15, $50/mo, $0.06/GB; no ¥."
+        }
+      },
+      "gap": "No Japanese surface at all; a JP buyer cannot evaluate or approve it without FX guesswork.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "PostHog",
+      "category": "Product analytics",
+      "site": "posthog.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "Footer = Terms/Privacy/DPA/SOC 2/HIPAA — no 特商法."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "posthog.com/ja = HTTP 404; no <html lang> found; no switcher."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "States 'All prices are in US Dollars (USD), excluding taxes.' No ¥."
+        }
+      },
+      "gap": "Explicitly USD-only and English-only; no JP surface.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Railway",
+      "category": "Hosting / PaaS",
+      "site": "railway.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "railway.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "Popular with JP indie devs, but no localized surface and no 特商法.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Render",
+      "category": "Hosting / PaaS",
+      "site": "render.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "render.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "English/USD-only; no JP entry point.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Retool",
+      "category": "Low-code / Internal tools",
+      "site": "retool.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "retool.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: Builder $10/mo (annual), $50/mo (Business); no ¥."
+        }
+      },
+      "gap": "Strong internal-tools demand in JP enterprise, but English/USD-only with no 特商法.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Sanity",
+      "category": "Headless CMS",
+      "site": "sanity.io",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "sanity.io/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: $0/forever, $15 per seat/month; no ¥."
+        }
+      },
+      "gap": "English/USD-only; no JP entry point.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Sentry",
+      "category": "Observability / Error monitoring",
+      "site": "sentry.io",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 link on the pricing page or footer."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "sentry.io/ja redirects to /auth/login/ja/ (an English login page with a ja locale param) — no Japanese marketing site."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese marketing copy; the /ja redirect lands on an English login (lang=en, 0 JP chars)."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja in homepage HTML."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: $0, $26/mo, $80/mo; no ¥; no currency switcher."
+        }
+      },
+      "gap": "The /ja route is only a login-form locale, not a localized site. JP buyers see English/USD throughout with no 特商法.",
+      "fix": "特商法 + a real /ja marketing landing + hreflang + JPY."
+    },
+    {
+      "name": "Supabase",
+      "category": "BaaS (Postgres / auth / storage)",
+      "site": "supabase.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "supabase.com/ja = HTTP 404 (308 trailing-slash then 404); <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content on the marketing site."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: $0/$25/month tiers; no ¥."
+        }
+      },
+      "gap": "Huge JP developer mindshare, zero localized front door — JP traffic lands on an English/USD page with no 特商法.",
+      "fix": "特商法 + /ja landing + hreflang + JPY; docs translation for the highest-traffic guides."
+    },
+    {
+      "name": "SuperTokens",
+      "category": "Auth",
+      "site": "supertokens.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "supertokens.com English-only; no /ja."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "Auth UI has an i18n hook (translationFunc) but ships no bundled ja translation (only an example)."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing."
+        }
+      },
+      "gap": "Auth UI in Japanese is often mandatory for JP adoption, yet no bundled ja locale ships and the site is English-only.",
+      "fix": "Ship a bundled ja login-UI locale; 特商法 + /ja + hreflang + JPY for the site."
+    },
+    {
+      "name": "Turso",
+      "category": "Database (edge SQLite)",
+      "site": "turso.tech",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "Footer lists Terms/Privacy/Trust/About/Contact/Support — no 特商法; /terms-of-use = CHISELSTRIKE INC., Delaware."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "turso.tech/ja and docs.turso.tech/ja both return HTTP 404; no language switcher."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese text anywhere on site or docs."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD only: $0, $4.99/mo, $24.92/mo, $416.58/mo, $0.75/GB. No JPY, no toggle."
+        }
+      },
+      "gap": "Strong organic pull with Japanese indie/SaaS devs (libSQL/edge-SQLite), but every JP-facing surface is missing — the front door is fully closed at the procurement and finance gate.",
+      "fix": "One static 特商法 page + a /ja landing + translated quickstart + hreflang + a JPY display toggle. All footer/page-level, no product change."
+    },
+    {
+      "name": "Unleash",
+      "category": "Feature flags",
+      "site": "getunleash.io",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "getunleash.io <html lang=\"en\">; no /ja; no switcher."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "Dashboard English-only; no UI i18n framework (only date-fns date locales)."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD: $0/$79/$199."
+        }
+      },
+      "gap": "Feature-flag demand is solid among JP SaaS/enterprise, but the product is English-only and the site has zero JP presence.",
+      "fix": "Add a UI i18n layer + ja for the product; 特商法 + /ja + hreflang + JPY for the site."
+    },
+    {
+      "name": "Upstash",
+      "category": "Database (serverless Redis/Kafka)",
+      "site": "upstash.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "upstash.com/ja = HTTP 404; <html lang=\"en\">."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No Japanese content."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "English/USD-only; no JP entry point.",
+      "fix": "特商法 + /ja + hreflang + JPY."
+    },
+    {
+      "name": "Vercel",
+      "category": "Hosting / Frontend cloud",
+      "site": "vercel.com",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "vercel.com/ja = HTTP 200 but is an English dashboard SPA shell (<html lang=\"en-US\">, 0 Japanese chars) — a locale param, not a localized site."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "No rendered Japanese marketing copy."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "0 hreflang tags in homepage HTML."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing; no ¥."
+        }
+      },
+      "gap": "The /ja route exists but serves English — a textbook 'looks localized, isn't' case. No real Japanese marketing site, no 特商法, no JPY.",
+      "fix": "Turn /ja into a real localized landing page (not an English shell) + hreflang + 特商法 + JPY."
+    },
+    {
+      "name": "Windmill",
+      "category": "Developer platform / Workflow",
+      "site": "windmill.dev",
+      "score": 0,
+      "signals": {
+        "tokushoho": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No 特商法 page."
+        },
+        "ja_site": {
+          "pass": false,
+          "value": "none",
+          "evidence": "windmill.dev English-only; no /ja."
+        },
+        "jp_content": {
+          "pass": false,
+          "value": "none",
+          "evidence": "Product UI (Svelte) has no i18n layer; English-only."
+        },
+        "hreflang_ja": {
+          "pass": false,
+          "value": "absent",
+          "evidence": "No hreflang ja."
+        },
+        "jpy_pricing": {
+          "pass": false,
+          "value": "usd",
+          "evidence": "USD pricing."
+        }
+      },
+      "gap": "Workflow/automation has JP developer demand, but neither product nor site offers Japanese.",
+      "fix": "UI i18n foundation + ja; site 特商法 + /ja + hreflang + JPY."
+    }
+  ]
+}
