@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: 1200px 630px; margin: 0; }
+  *{box-sizing:border-box; margin:0; padding:0}
+  :root{
+    --paper:#f4f1ea; --paper2:#eae5da; --ink:#1a1714; --ink2:#46403a;
+    --line:#cfc7b8; --line2:#bdb3a0; --ink-faint:#7a7263;
+    --vrm:#c4341f; --vrm-d:#9c2817;
+  }
+  html,body{width:1200px; height:630px}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:"Courier New",ui-monospace,monospace;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:48px 48px;
+    position:relative; overflow:hidden;
+  }
+  .frame{position:absolute; inset:26px; border:3px double var(--ink); padding:40px 48px; display:flex; flex-direction:column}
+  .kick{font-size:18px; letter-spacing:.34em; text-transform:uppercase; color:var(--vrm-d); font-weight:700}
+  h1{font-size:62px; line-height:1.0; letter-spacing:-.015em; margin-top:14px; font-weight:700; color:var(--ink)}
+  .sub{font-size:21px; color:var(--ink2); margin-top:12px; max-width:46ch; line-height:1.4}
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); border:2px solid var(--ink); margin-top:auto}
+  .stat{border-right:1px solid var(--line2); padding:20px 18px}
+  .stat:last-child{border-right:none}
+  .stat .n{font-size:58px; font-weight:700; line-height:.92; letter-spacing:-.02em; color:var(--ink)}
+  .stat .n.vrm{color:var(--vrm)}
+  .stat .l{font-size:14px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink-faint); margin-top:12px; line-height:1.3}
+  .foot{display:flex; justify-content:space-between; align-items:baseline; margin-top:22px; font-size:16px; color:var(--ink-faint)}
+  .foot b{color:var(--ink); letter-spacing:.04em}
+  .seal{position:absolute; top:46px; right:60px; border:2px solid var(--vrm-d); color:var(--vrm-d);
+        font-size:13px; letter-spacing:.14em; text-transform:uppercase; padding:8px 14px; font-weight:700; transform:rotate(3deg)}
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="seal">Field Report</div>
+    <p class="kick">greymoth · Japan-Readiness Index</p>
+    <h1>40 foreign dev-tools,<br>scored for Japan.</h1>
+    <p class="sub">Measured at the surface a Japanese buyer hits before they can adopt or pay. Every signal checked live against each tool's own site.</p>
+    <div class="stats">
+      <div class="stat"><div class="n vrm">0<span style="font-size:34px">/40</span></div><div class="l">have a 特商法 page</div></div>
+      <div class="stat"><div class="n vrm">0<span style="font-size:34px">/40</span></div><div class="l">price in JPY</div></div>
+      <div class="stat"><div class="n">5.6</div><div class="l">avg score /100</div></div>
+      <div class="stat"><div class="n">31</div><div class="l">score exactly 0</div></div>
+    </div>
+    <div class="foot">
+      <span>The front door is closed to Japan — and almost every gap is a <b>static page</b>, not product work.</span>
+      <span><b>greymoth-jp.github.io</b></span>
+    </div>
+  </div>
+</body>
+</html>

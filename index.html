@@ -5,10 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Japan-Readiness Index — how ready are foreign dev-tools for Japan?</title>
 <meta name="description" content="A live audit of 40 popular foreign developer tools, scored on Japan-market readiness: 特商法 page, /ja localization, hreflang ja, JPY pricing. 0 of 40 have a 特商法 page. None price in JPY.">
+<link rel="canonical" href="https://greymoth-jp.github.io/japan-readiness-index/">
 <meta property="og:title" content="Japan-Readiness Index — 40 foreign dev-tools, scored for Japan">
-<meta property="og:description" content="0 of 40 have a 特商法 page. None price in JPY. Only 3 have a real Japanese site. A live, evidence-based audit.">
+<meta property="og:description" content="0 of 40 have a 特商法 page. 0 price in JPY. Only 3 have a real Japanese site. Avg score 5.6/100. A live, evidence-based audit.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://greymoth-jp.github.io/japan-readiness-index/">
+<meta property="og:site_name" content="greymoth">
+<meta property="og:image" content="https://greymoth-jp.github.io/japan-readiness-index/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Japan-Readiness Index: 0 of 40 foreign dev-tools have a 特商法 page, 0 price in JPY, average score 5.6/100, 31 score exactly zero.">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Japan-Readiness Index — 40 foreign dev-tools, scored for Japan">
+<meta name="twitter:description" content="0 of 40 have a 特商法 page. 0 price in JPY. Only 3 have a real Japanese site. Avg score 5.6/100.">
+<meta name="twitter:image" content="https://greymoth-jp.github.io/japan-readiness-index/og.png">
 <style>
   :root{
     --paper:#f4f1ea; --paper2:#eae5da; --ink:#1a1714; --ink2:#46403a;
@@ -125,6 +135,29 @@
   .cta{border:1px solid var(--ink); padding:18px 20px; margin:8px 0 22px; background:var(--paper2)}
   .cta p{margin:0; font-size:13.5px; color:var(--ink2)}
   .cta .h{font-weight:700; color:var(--ink); display:block; margin-bottom:5px; letter-spacing:.02em}
+
+  /* clickable headline stats */
+  a.stat{text-decoration:none; border-bottom:none; color:inherit; transition:background .12s}
+  a.stat:hover{background:var(--paper2)}
+  a.stat:hover .l{color:var(--vrm-d)}
+  .stat .l .arr{opacity:0; font-size:10px; margin-left:4px}
+  a.stat:hover .l .arr{opacity:.7}
+
+  /* one-line method strip */
+  .howscored{font-size:12px; color:var(--ink-faint); margin:14px 0 0; letter-spacing:.01em; line-height:1.55}
+  .howscored b{color:var(--ink2)}
+  .howscored a{color:var(--vrm-d)}
+
+  /* share affordance */
+  .share{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin:22px 0 6px}
+  .share-lbl{font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--ink-faint)}
+  .share a, .share button{
+    font:inherit; font-size:12px; letter-spacing:.04em; cursor:pointer;
+    border:1px solid var(--ink); background:var(--paper); color:var(--ink);
+    padding:7px 13px; text-decoration:none; display:inline-flex; align-items:center; gap:6px;
+  }
+  .share a:hover, .share button:hover{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+  .share button.copied{background:var(--vrm-d); color:var(--paper); border-color:var(--vrm-d)}
 </style>
 </head>
 <body>
@@ -137,18 +170,25 @@
   <p class="meta-line">Every signal below was checked <b>live against each company's own site</b> on 2026-06-25 — HTTP status, <b>&lt;html lang&gt;</b>, hreflang, rendered Japanese copy, pricing currency. Scores derive from the evidence; nothing is estimated.</p>
 
   <div class="stats">
-    <div class="stat"><div class="n">40</div><div class="l">tools scanned</div></div>
-    <div class="stat"><div class="n vrm">0</div><div class="l">have a 特商法 page</div></div>
-    <div class="stat"><div class="n vrm">0</div><div class="l">price in JPY</div></div>
-    <div class="stat"><div class="n">3</div><div class="l">real Japanese site</div></div>
+    <a class="stat" href="#ranking" title="See the full ranking"><div class="n">40</div><div class="l">tools scanned<span class="arr">▾</span></div></a>
+    <a class="stat" href="#method" title="Why 特商法 matters + how it was checked"><div class="n vrm">0</div><div class="l">have a 特商法 page<span class="arr">▾</span></div></a>
+    <a class="stat" href="#method" title="Why JPY matters + how it was checked"><div class="n vrm">0</div><div class="l">price in JPY<span class="arr">▾</span></div></a>
+    <a class="stat" href="#partial" title="The 3 with a real Japanese site"><div class="n">3</div><div class="l">real Japanese site<span class="arr">▾</span></div></a>
   </div>
+  <p class="howscored">Each tool is scored 0–100 across five live-checked signals — <b>特商法 page (25)</b>, <b>localized /ja site (25)</b>, <b>Japanese copy (20)</b>, <b>hreflang ja (15)</b>, <b>JPY pricing (15)</b> — and every number above links to the evidence. <a href="#method">How it's scored ▾</a></p>
   <div class="lede">
     <strong>40 tools scanned. 0 have a 特商法 page. 0 price in JPY. Only 3 have a real Japanese-language site.</strong>
     The average readiness score is 5.6/100; the highest any single tool reaches is 60. This isn't a story about bad products — it's a front door that's closed to Japan, and almost every gap is a static page, not product work.
   </div>
+
+  <div class="share">
+    <span class="share-lbl">Share this</span>
+    <a id="tw" href="#" target="_blank" rel="noopener" title="Share on X">↗ Post on X</a>
+    <button id="copy" type="button" title="Copy link to this page">⧉ Copy link</button>
+  </div>
 </header>
 
-<section>
+<section id="ranking">
   <h2>The ranking <span class="c">— 40 tools</span></h2>
   <div class="controls">
     <button class="filt on" data-f="all">All</button>
@@ -169,7 +209,7 @@
       <th class="c">Score</th><th>Tier</th><th></th>
     </tr></thead>
     
-    <tbody class="grp partial">
+    <tbody class="grp partial" id="partial">
       <tr class="row" data-tier="partial" onclick="this.closest('tbody').classList.toggle('open')">
         <td class="rank">01</td>
         <td class="name"><span class="nm">Auth0</span><span class="site">auth0.com</span></td>
@@ -1054,7 +1094,7 @@
   <p class="note">Click any row for the per-signal evidence, the gap, and the one-line fix. Tiers: 70–100 JP-ready · 30–69 partial · 0–29 closed. No tool reached the top tier.</p>
 </section>
 
-<section>
+<section id="method">
   <h2>How it's scored</h2>
   <table class="method">
     <tbody><tr><td class="mw">25</td><td class="ml">特商法 page (Specified Commercial Transactions Act)</td><td class="my">Legally expected for any paid online service sold in Japan. Its absence is a hard stop for many corporate procurement / legal teams — the deal dies before engineering is ever evaluated.</td></tr><tr><td class="mw">25</td><td class="ml">Localized Japanese site / /ja route</td><td class="my">A real Japanese-language entry point. Scored on rendered Japanese marketing copy, not on a route merely existing — an English SPA shell served at /ja scores zero.</td></tr><tr><td class="mw">20</td><td class="ml">Japanese content / language switcher</td><td class="my">Any genuine Japanese copy or a switcher that offers Japanese. Partial credit for token Japanese; zero for none.</td></tr><tr><td class="mw">15</td><td class="ml">hreflang=&quot;ja&quot; alternate</td><td class="my">Without it, Japanese-language search traffic never lands on a localized page — invisible in JP Google results.</td></tr><tr><td class="mw">15</td><td class="ml">JPY pricing / currency</td><td class="my">USD-only forces JP finance to FX-convert and absorb forex fees, and gives them no clean number to approve. A JPY display toggle is enough; billing can stay USD.</td></tr></tbody>
@@ -1094,6 +1134,28 @@
       });
     });
   });
+
+  // Share affordance — tweet intent + copy link
+  (function(){
+    var url='https://greymoth-jp.github.io/japan-readiness-index/';
+    var hook='I scored 40 popular foreign dev-tools on how ready they are for the Japanese market.\n\n0 of 40 have a 特商法 page. 0 price in JPY. Only 3 have a real Japanese site. Average score: 5.6/100.\n\nEvery number is checked live against each tool’s own site:';
+    var tw=document.getElementById('tw');
+    if(tw){
+      tw.href='https://twitter.com/intent/tweet?text='+encodeURIComponent(hook)+'&url='+encodeURIComponent(url);
+    }
+    var copy=document.getElementById('copy');
+    if(copy){
+      copy.addEventListener('click',function(){
+        var done=function(){
+          var t=copy.textContent; copy.textContent='✓ Copied'; copy.classList.add('copied');
+          setTimeout(function(){copy.textContent=t; copy.classList.remove('copied');},1600);
+        };
+        if(navigator.clipboard&&navigator.clipboard.writeText){
+          navigator.clipboard.writeText(url).then(done).catch(function(){window.prompt('Copy this link:',url);});
+        }else{window.prompt('Copy this link:',url);}
+      });
+    }
+  })();
 </script>
 </body>
 </html>
