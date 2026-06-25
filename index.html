@@ -201,6 +201,23 @@
   }
   .share a:hover, .share button:hover{background:var(--ink); color:var(--paper); border-color:var(--ink)}
   .share button.copied{background:var(--vrm-d); color:var(--paper); border-color:var(--vrm-d)}
+
+  /* embed section */
+  #embed .ebintro{font-size:13.5px; color:var(--ink2); margin:0 0 18px; max-width:72ch; line-height:1.6}
+  #embed .ebintro b{color:var(--ink)}
+  #embed .ebnote{font-size:12px; color:var(--ink-faint); margin:0 0 22px; line-height:1.55}
+  .ebgrid{display:grid; grid-template-columns:1fr 1fr; gap:10px 22px}
+  @media(max-width:760px){.ebgrid{grid-template-columns:1fr}}
+  .ebcard{border:1px solid var(--line2); padding:11px 12px 12px; background:var(--paper)}
+  .ebcard .ebhead{display:flex; align-items:center; gap:10px; margin-bottom:8px}
+  .ebcard .ebhead img{display:block; height:20px}
+  .ebcard .ebhead .ebnm{font-weight:700; font-size:12.5px; color:var(--ink); letter-spacing:.01em}
+  .ebcard pre{
+    margin:0; padding:8px 9px; background:var(--paper2); border:1px solid var(--line);
+    font-family:"Courier New",ui-monospace,monospace; font-size:11px; color:var(--ink2);
+    overflow-x:auto; white-space:pre; line-height:1.45;
+  }
+  .ebcard pre code{font:inherit; color:inherit}
 </style>
 </head>
 <body>
@@ -1152,6 +1169,174 @@
     <div class="pat"><span class="pt"><b>Localized everywhere except Japan.</b> Algolia built the whole i18n machine — English, German, French, Brazilian Portuguese, Spanish, Italian. Japanese is the one major market it skipped. The hard part is already done.</span></div>
     <div class="pat"><span class="pt"><b>The product is ready; the storefront isn't.</b> Appwrite, Logto, Coolify, Umami, Formbricks and ToolJet ship a Japanese product UI — yet a JP buyer sees an English site, USD pricing and no 特商法, and never learns the product speaks Japanese.</span></div>
     <div class="pat"><span class="pt"><b>And the universal one:</b> 特商法 is missing everywhere — 0 of 40. It is one static page. Its absence quietly disqualifies a vendor from many Japanese corporate purchases, and most teams never hear why the deal went quiet.</span></div>
+  </div>
+</section>
+
+<section id="embed">
+  <h2>Embed this badge <span class="c">— show your Japan-readiness</span></h2>
+  <p class="ebintro">Run one of these tools? Drop its badge into your <b>README</b> or site — it shows your current Japan-readiness score and links back to the live, evidence-backed index. The score updates whenever this page is re-scanned; close the gaps (特商法 + /ja + hreflang + JPY) and your number climbs.</p>
+  <p class="ebnote">Badges are static SVGs served from this site. The link points to the ranking table (this index has no per-tool anchor, so it deep-links to the full ranking, not a fabricated per-tool URL). Colour follows the tier: <span style="color:#2e7d32;font-weight:700">green 70–100</span> · <span style="color:#b07d00;font-weight:700">amber 30–69</span> · <span style="color:#9c3a2c;font-weight:700">red 0–29</span>.</p>
+  <div class="ebgrid">
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/auth0.svg" alt="Japan-Readiness 60/100 — Auth0" height="20"><span class="ebnm">Auth0</span></div>
+      <pre><code>[![Japan-Readiness 60/100](https://greymoth-jp.github.io/japan-readiness-index/badge/auth0.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/twilio-segment.svg" alt="Japan-Readiness 60/100 — Twilio Segment" height="20"><span class="ebnm">Twilio Segment</span></div>
+      <pre><code>[![Japan-Readiness 60/100](https://greymoth-jp.github.io/japan-readiness-index/badge/twilio-segment.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/hashicorp-terraform-vault.svg" alt="Japan-Readiness 45/100 — HashiCorp (Terraform / Vault)" height="20"><span class="ebnm">HashiCorp (Terraform / Vault)</span></div>
+      <pre><code>[![Japan-Readiness 45/100](https://greymoth-jp.github.io/japan-readiness-index/badge/hashicorp-terraform-vault.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/appwrite.svg" alt="Japan-Readiness 10/100 — Appwrite" height="20"><span class="ebnm">Appwrite</span></div>
+      <pre><code>[![Japan-Readiness 10/100](https://greymoth-jp.github.io/japan-readiness-index/badge/appwrite.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/coolify.svg" alt="Japan-Readiness 10/100 — Coolify" height="20"><span class="ebnm">Coolify</span></div>
+      <pre><code>[![Japan-Readiness 10/100](https://greymoth-jp.github.io/japan-readiness-index/badge/coolify.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/formbricks.svg" alt="Japan-Readiness 10/100 — Formbricks" height="20"><span class="ebnm">Formbricks</span></div>
+      <pre><code>[![Japan-Readiness 10/100](https://greymoth-jp.github.io/japan-readiness-index/badge/formbricks.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/logto.svg" alt="Japan-Readiness 10/100 — Logto" height="20"><span class="ebnm">Logto</span></div>
+      <pre><code>[![Japan-Readiness 10/100](https://greymoth-jp.github.io/japan-readiness-index/badge/logto.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/tooljet.svg" alt="Japan-Readiness 10/100 — ToolJet" height="20"><span class="ebnm">ToolJet</span></div>
+      <pre><code>[![Japan-Readiness 10/100](https://greymoth-jp.github.io/japan-readiness-index/badge/tooljet.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/umami.svg" alt="Japan-Readiness 10/100 — Umami" height="20"><span class="ebnm">Umami</span></div>
+      <pre><code>[![Japan-Readiness 10/100](https://greymoth-jp.github.io/japan-readiness-index/badge/umami.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/algolia.svg" alt="Japan-Readiness 0/100 — Algolia" height="20"><span class="ebnm">Algolia</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/algolia.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/appsmith.svg" alt="Japan-Readiness 0/100 — Appsmith" height="20"><span class="ebnm">Appsmith</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/appsmith.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/browserstack.svg" alt="Japan-Readiness 0/100 — BrowserStack" height="20"><span class="ebnm">BrowserStack</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/browserstack.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/clerk.svg" alt="Japan-Readiness 0/100 — Clerk" height="20"><span class="ebnm">Clerk</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/clerk.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/contentful.svg" alt="Japan-Readiness 0/100 — Contentful" height="20"><span class="ebnm">Contentful</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/contentful.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/directus.svg" alt="Japan-Readiness 0/100 — Directus" height="20"><span class="ebnm">Directus</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/directus.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/doppler.svg" alt="Japan-Readiness 0/100 — Doppler" height="20"><span class="ebnm">Doppler</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/doppler.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/flagsmith.svg" alt="Japan-Readiness 0/100 — Flagsmith" height="20"><span class="ebnm">Flagsmith</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/flagsmith.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/fly-io.svg" alt="Japan-Readiness 0/100 — Fly.io" height="20"><span class="ebnm">Fly.io</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/fly-io.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/hasura.svg" alt="Japan-Readiness 0/100 — Hasura" height="20"><span class="ebnm">Hasura</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/hasura.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/infisical.svg" alt="Japan-Readiness 0/100 — Infisical" height="20"><span class="ebnm">Infisical</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/infisical.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/inngest.svg" alt="Japan-Readiness 0/100 — Inngest" height="20"><span class="ebnm">Inngest</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/inngest.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/linear.svg" alt="Japan-Readiness 0/100 — Linear" height="20"><span class="ebnm">Linear</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/linear.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/mux.svg" alt="Japan-Readiness 0/100 — Mux" height="20"><span class="ebnm">Mux</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/mux.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/n8n.svg" alt="Japan-Readiness 0/100 — n8n" height="20"><span class="ebnm">n8n</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/n8n.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/neon.svg" alt="Japan-Readiness 0/100 — Neon" height="20"><span class="ebnm">Neon</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/neon.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/novu.svg" alt="Japan-Readiness 0/100 — Novu" height="20"><span class="ebnm">Novu</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/novu.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/planetscale.svg" alt="Japan-Readiness 0/100 — PlanetScale" height="20"><span class="ebnm">PlanetScale</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/planetscale.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/posthog.svg" alt="Japan-Readiness 0/100 — PostHog" height="20"><span class="ebnm">PostHog</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/posthog.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/railway.svg" alt="Japan-Readiness 0/100 — Railway" height="20"><span class="ebnm">Railway</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/railway.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/render.svg" alt="Japan-Readiness 0/100 — Render" height="20"><span class="ebnm">Render</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/render.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/retool.svg" alt="Japan-Readiness 0/100 — Retool" height="20"><span class="ebnm">Retool</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/retool.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/sanity.svg" alt="Japan-Readiness 0/100 — Sanity" height="20"><span class="ebnm">Sanity</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/sanity.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/sentry.svg" alt="Japan-Readiness 0/100 — Sentry" height="20"><span class="ebnm">Sentry</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/sentry.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/supabase.svg" alt="Japan-Readiness 0/100 — Supabase" height="20"><span class="ebnm">Supabase</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/supabase.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/supertokens.svg" alt="Japan-Readiness 0/100 — SuperTokens" height="20"><span class="ebnm">SuperTokens</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/supertokens.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/turso.svg" alt="Japan-Readiness 0/100 — Turso" height="20"><span class="ebnm">Turso</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/turso.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/unleash.svg" alt="Japan-Readiness 0/100 — Unleash" height="20"><span class="ebnm">Unleash</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/unleash.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/upstash.svg" alt="Japan-Readiness 0/100 — Upstash" height="20"><span class="ebnm">Upstash</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/upstash.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/vercel.svg" alt="Japan-Readiness 0/100 — Vercel" height="20"><span class="ebnm">Vercel</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/vercel.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
+    <div class="ebcard">
+      <div class="ebhead"><img src="badge/windmill.svg" alt="Japan-Readiness 0/100 — Windmill" height="20"><span class="ebnm">Windmill</span></div>
+      <pre><code>[![Japan-Readiness 0/100](https://greymoth-jp.github.io/japan-readiness-index/badge/windmill.svg)](https://greymoth-jp.github.io/japan-readiness-index/#ranking)</code></pre>
+    </div>
   </div>
 </section>
 

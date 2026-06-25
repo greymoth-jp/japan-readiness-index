@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="122.1" height="20" role="img" aria-label="Japan-Ready: 60/100">
+<title>Japan-Ready: 60/100</title>
+<linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#fff" stop-opacity=".08"/><stop offset="1" stop-opacity=".18"/></linearGradient>
+<clipPath id="r"><rect width="122.1" height="20" rx="3" fill="#fff"/></clipPath>
+<g clip-path="url(#r)">
+<rect width="76.2" height="20" fill="#0a0a0a"/>
+<rect x="76.2" width="45.9" height="20" fill="#b07d00"/>
+<rect width="122.1" height="20" fill="url(#s)"/>
+</g>
+<g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+<text x="38.1" y="15" fill="#000" fill-opacity=".25">Japan-Ready</text>
+<text x="38.1" y="14">Japan-Ready</text>
+<text x="99.15" y="15" fill="#000" fill-opacity=".25">60/100</text>
+<text x="99.15" y="14">60/100</text>
+</g>
+</svg>
